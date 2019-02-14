@@ -1,0 +1,61 @@
+    // Complete the mergeLists function below.
+
+    /*
+     * For your reference:
+     *
+     * SinglyLinkedListNode {
+     *     int data;
+     *     SinglyLinkedListNode next;
+     * }
+     *
+     */
+    static SinglyLinkedListNode mergeLists(SinglyLinkedListNode head1, SinglyLinkedListNode head2)     {
+       SinglyLinkedListNode newHead = null, newTail = null, temp1 = null, temp2 = null;
+        
+        if(head1 == null && head2 == null)
+            return null;
+        else if(head1 != null && head2 == null)
+            return head1;
+        else if(head1 == null && head2 != null)
+            return head2;
+        else {
+            temp1 = head1;
+            temp2 = head2;
+            SinglyLinkedListNode node = null;
+            while(temp1 != null && temp2 != null) {
+                if(temp1.data == temp2.data) {
+                    node = new SinglyLinkedListNode(temp1.data);                    
+                    temp1 = temp1.next;
+                    //temp2 = temp2.next;
+                } else if(temp1.data < temp2.data) {
+                    node = new SinglyLinkedListNode(temp1.data);                    
+                    temp1 = temp1.next;
+                } else if(temp1.data > temp2.data) {
+                    node = new SinglyLinkedListNode(temp2.data);                    
+                    temp2 = temp2.next;
+                }
+                if(newHead == null && newTail == null) {
+                    newHead = newTail = node;
+                } else {
+                    newTail.next = node;
+                    newTail = node;
+                }
+            }
+            while(temp1 != null) {
+                node = new SinglyLinkedListNode(temp1.data); 
+                newTail.next = node;
+                newTail = node;
+                temp1 = temp1.next;
+            }
+            
+            while(temp2 != null) {
+                node = new SinglyLinkedListNode(temp2.data); 
+                newTail.next = node;
+                newTail = node;
+                temp2 = temp2.next;
+            }
+            
+        }
+        return newHead;
+
+    }
