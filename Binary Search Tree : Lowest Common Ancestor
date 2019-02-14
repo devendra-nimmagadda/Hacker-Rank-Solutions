@@ -1,0 +1,42 @@
+	/*
+    class Node 
+    	int data;
+    	Node left;
+    	Node right;
+	*/
+	public static Node lca(Node root, int v1, int v2) {
+        if(root == null)
+            return null;
+      	List<Node> v1Nodes = getNodes(root, v1);
+        List<Node> v2Nodes = getNodes(root, v2);
+        if(v1Nodes.size() == 0 || v2Nodes.size() == 0)
+            return null;
+        else {
+            int index = 0;
+            Node lcaNode = null;
+            while(index < v1Nodes.size() && index < v2Nodes.size() &&
+                  v1Nodes.get(index).data == v2Nodes.get(index).data) {                
+                lcaNode = v1Nodes.get(index);
+                index ++;
+            }            
+            return lcaNode;
+        }
+    }
+
+    static List<Node> getNodes(Node root, int val) {
+        List<Node> vals = new ArrayList<Node>();
+        Node temp = root;
+        while(temp != null) {
+            if(val < temp.data) {
+                vals.add(temp);
+                temp = temp.left;
+            } else if (val > temp.data) {
+                vals.add(temp);
+                temp = temp.right;
+            } else {
+                vals.add(temp);
+                break;
+            }
+        }
+        return vals;
+    }
