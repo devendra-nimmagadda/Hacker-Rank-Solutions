@@ -1,0 +1,30 @@
+    // Complete the deleteNode function below.
+
+    /*
+     * For your reference:
+     *
+     * SinglyLinkedListNode {
+     *     int data;
+     *     SinglyLinkedListNode next;
+     * }
+     *
+     */
+    static SinglyLinkedListNode deleteNode(SinglyLinkedListNode head, int position) {
+        
+        if(head == null || position <0)
+            return head;
+        if (position == 0) {
+            head = head.next;
+        } else {
+            SinglyLinkedListNode temp = head;
+            int count = 1;
+            while(temp.next != null && count < position) {
+                temp = temp.next;
+                count ++;            
+            }
+            if (count == position && temp.next != null)
+                temp.next = temp.next.next;
+        }
+        
+        return head;
+    }
