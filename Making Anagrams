@@ -1,0 +1,75 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the makingAnagrams function below.
+    static int makingAnagrams(String s1, String s2) {
+        int count = 0;
+        Map<Character, Integer> map1 = getCharCount(s1);
+        Map<Character, Integer> map2 = getCharCount(s2);
+        Set<Character> set1 = map1.keySet();
+        Set<Character> set2 = map2.keySet();
+        
+        Set<Character> ts = new HashSet<>(set1);
+        Set<Character> ts11 = new HashSet<>(set1);
+        Set<Character> ts2 = new HashSet<>(set2);
+        Set<Character> ts21 = new HashSet<>(set2);
+        ts.removeAll(ts2);
+        ts21.removeAll(ts11);
+        
+        for(Character c:ts) {
+            count += map1.get(c);
+        }
+        for(Character c:ts21) {
+            count += map2.get(c);
+        }
+        set1.retainAll(set2);
+        for(Character c:set1) {
+            count += Math.abs(map1.get(c) - map2.get(c));
+        }
+        
+        return count;
+    }
+
+    private static Map<Character, Integer> getCharCount(String str) {
+        Map<Character, Integer> map = new HashMap<>();
+        
+        if(str != null && str.length() > 0)
+        {
+            for(char c:str.toCharArray()) {
+                if(map.containsKey(c)) {
+                    map.put(c, map.get(c)+1);
+                } else {
+                    map.put(c, 1);
+                }
+            }
+        }
+        
+        return map;
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String s1 = scanner.nextLine();
+
+        String s2 = scanner.nextLine();
+
+        int result = makingAnagrams(s1, s2);
+
+        bufferedWriter.write(String.valueOf(result));
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
