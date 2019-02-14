@@ -1,0 +1,27 @@
+	/* 
+    
+    class Node 
+    	int data;
+    	Node left;
+    	Node right;
+	*/
+	public static void levelOrder(Node root) {
+      
+          if(root != null) {
+                List<Node> queue = new ArrayList<>(); 
+                Node temp = root;
+                queue.add(temp);
+                int index = 0;
+                while(index < queue.size()){
+                   Node node = queue.remove(index);
+                   System.out.printf("%d ", node.data);
+                   if (node.left != null && !queue.contains(node.left))
+                       queue.add(node.left);
+                   if (node.right != null && !queue.contains(node.right))
+                       queue.add(node.right);                   
+                }
+          }
+          
+        
+        
+    }
