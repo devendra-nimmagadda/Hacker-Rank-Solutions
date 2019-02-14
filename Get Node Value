@@ -1,0 +1,32 @@
+    // Complete the getNode function below.
+
+    /*
+     * For your reference:
+     *
+     * SinglyLinkedListNode {
+     *     int data;
+     *     SinglyLinkedListNode next;
+     * }
+     *
+     */
+    static int getNode(SinglyLinkedListNode head, int positionFromTail) {
+        
+        List<Integer> list = new ArrayList<>();  
+        
+        
+        SinglyLinkedListNode temp = head;
+        while(temp != null) {
+            if(list.size() == positionFromTail + 1) {
+                list.remove(0);
+                list.add(temp.data);
+            } else {
+                list.add(temp.data);
+            }
+            
+            temp = temp.next;
+        }
+        
+        return list.get(0);
+    
+
+    }
