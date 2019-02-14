@@ -1,0 +1,129 @@
+import java.util.List;
+import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+public class Solution {
+
+    // Complete the almostSorted function below.
+    static void almostSorted(int[] arr) {
+        List<Integer> diff = null;
+        int[] temp = new int[arr.length];
+        diff = IntStream.range(0, arr.length-1)
+                    .mapToObj(i-> arr[i]-arr[i+1])
+                    .collect(Collectors.toList());
+        
+        if(! diff.stream().filter(x-> x > 0).findAny().isPresent()) {
+            System.out.println("yes");
+            return;
+        }
+        long gt = diff.stream().filter(x -> x>0).count();
+        if(gt == 1) {
+            if(diff.size() == 1) {
+                System.out.println("yes");
+                System.out.println("swap 1 2");
+            } else if(diff.stream().filter(x -> x<0).count() == diff.size() - 1){                
+                
+                System.arraycopy(arr, 0, temp, 0, arr.length);            
+                
+                
+                diff = IntStream.range(0, temp.length-1)
+                        .mapToObj(i-> temp[i]-temp[i+1])
+                        .collect(Collectors.toList());
+                
+                
+                for(int i=0; i<diff.size(); i++) {
+                    if(diff.get(i) > 0) {
+                        int t = temp[i];
+                        temp[i] = temp[i+1];
+                        temp[i+1] = t;
+                        diff = IntStream.range(0, temp.length-1)
+                                .mapToObj(x-> temp[x]-temp[x+1])
+                                .collect(Collectors.toList());
+                        
+                        if(diff.stream().allMatch(x -> x < 0)) {
+                            System.out.println("yes");
+                            System.out.println("swap "+(i+1)+" "+(i+2));
+                        } else {
+                            System.out.println("no");
+                        }
+                        break;
+                    }            
+                }                
+            } else {
+                System.out.println("no");
+            }
+        } else if(diff.size() == gt) {
+            System.out.println("yes");
+            System.out.println("reverse 1 "+(diff.size()+1));
+        } else {
+            int min = -1, max = -1;
+            for(int i=0; i<diff.size(); i++) {
+                if(diff.get(i) > 0) {
+                    if(min == -1) {
+                        min = i + 1;
+                        max = i + 2;
+                    } else {
+                        max = i+2;
+                    }
+                }
+            }
+            int omin = min, omax = max;            
+            
+            System.arraycopy(arr, 0, temp, 0, arr.length);            
+            int t = temp[min-1];
+            temp[min-1] = temp[max-1];
+            temp[max-1] = t;
+            
+            diff = IntStream.range(0, temp.length-1)
+                    .mapToObj(i-> temp[i]-temp[i+1])
+                    .collect(Collectors.toList());
+            
+            if(diff.stream().allMatch(x -> x < 0)) {
+                System.out.println("yes");
+                System.out.println("swap "+omin+" "+omax);
+            } else {
+                System.arraycopy(arr, 0, temp, 0, arr.length);
+                while(min <= max) {
+                    t = arr[min-1];
+                    arr[min-1] = arr[max-1];
+                    arr[max-1] = t;
+                    min ++;
+                    max --;
+                }
+                
+                diff = IntStream.range(0, arr.length-1)
+                        .mapToObj(i-> arr[i]-arr[i+1])
+                        .collect(Collectors.toList());
+                if(diff.stream().filter(x -> x>0).count() > 0) {
+                    System.out.println("no");
+                } else {
+                    System.out.println("yes");
+                    System.out.println("reverse "+omin+" "+omax);
+                }
+            }
+        }    
+        
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int n = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        int[] arr = new int[n];
+
+        String[] arrItems = scanner.nextLine().split(" ");
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int i = 0; i < n; i++) {
+            int arrItem = Integer.parseInt(arrItems[i]);
+            arr[i] = arrItem;
+        }
+
+        almostSorted(arr);
+
+        scanner.close();
+    }
+}
