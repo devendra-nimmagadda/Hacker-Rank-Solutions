@@ -1,0 +1,77 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+import java.util.stream.Collectors;
+public class Solution {
+
+    static int anagram(String s) {
+        if(s.length()%2 == 1)
+            return -1;
+        List<Character> left = new ArrayList<>();
+        List<Character> right = new ArrayList<>();
+        for(int i=0;i<s.length(); i++) {
+            if(i<s.length()/2)
+                left.add(s.charAt(i));
+            else
+                right.add(s.charAt(i));
+        }
+        //print(left);
+        //print(right);        
+        //System.out.println("----------------");
+        
+        List<Character> ltemp = new ArrayList<>(left);
+        List<Character> rtemp = new ArrayList<>(right);
+        
+        
+        List<Character> ldiff = diff(left, right);
+        List<Character> rdiff = diff(rtemp, ltemp);
+        
+        //print(ldiff);
+        //print(rdiff);        
+        //System.out.println("----------------");
+        
+        if(ldiff.size() == 0 && rdiff.size() == 0)
+            return 0;
+        else 
+            return ldiff.size() < rdiff.size()? rdiff.size():ldiff.size();
+    }
+    static void print(List<Character> t1) {
+        for(char c:t1)
+            System.out.printf(c+" ");
+        System.out.println();
+    }
+    static List<Character> diff(List<Character> t1, List<Character> t2) {
+       
+        for(Character c:t1) {
+            t2.remove(c);
+        }
+        
+        return new ArrayList<>(t2);
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        int q = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        for (int qItr = 0; qItr < q; qItr++) {
+            String s = scanner.nextLine();
+
+            int result = anagram(s);
+
+            bufferedWriter.write(String.valueOf(result));
+            bufferedWriter.newLine();
+        }
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
