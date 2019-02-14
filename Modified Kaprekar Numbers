@@ -1,0 +1,48 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+import java.util.stream.IntStream;
+public class Solution {
+
+    // Complete the kaprekarNumbers function below.
+    static void kaprekarNumbers(int p, int q) {
+
+        List<Long> list = new ArrayList<>();
+        IntStream.rangeClosed(p, q)
+                .forEach(y-> {
+                    long a = y; 
+                    long x = a*a;
+                    int d1 = (a+"").length();
+                    int d2 = (x+"").length()-d1;        
+                    String r = (x+"").substring(d2, (x+"").length());
+                    String l = (x+"").substring(0, d2);
+                    if(a == Integer.valueOf(l.length()>0?l:"0")+Integer.valueOf(r.length()>0?r:"0"))
+                        list.add(a);                
+                    
+                });
+        if(list.isEmpty())
+            System.out.println("INVALID RANGE");
+        else 
+            list.stream().forEach(x-> System.out.printf(x+" "));        
+    
+
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int p = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        int q = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        kaprekarNumbers(p, q);
+
+        scanner.close();
+    }
+}
