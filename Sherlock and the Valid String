@@ -1,0 +1,72 @@
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    // Complete the isValid function below.
+    static String isValid(String s) {
+
+        String result = "NO";
+        Map<Character, Integer> map = new HashMap<>();
+        
+        for(char c:s.toCharArray()) {
+            if(map.containsKey(c)) {
+                map.put(c, map.get(c)+1);                
+            } else {
+                map.put(c, 1);
+            }
+        }
+        
+        Map<Integer, Integer> map2 = new HashMap<>();
+        
+        for(int i:map.values()) {
+            if(map2.containsKey(i)) {
+                map2.put(i, map2.get(i)+1);                
+            } else {
+                map2.put(i, 1);
+            }
+        }
+        
+        if(map2.size() == 1)
+            result = "YES";
+        else if(map2.size() == 2) {
+            Iterator<Integer> it = map2.keySet().iterator();
+            int x = it.next();
+            int y = it.next();
+            
+            if((map2.get(x) == 1 || map2.get(y) == 1)
+                    && ((int)Math.abs(x-y) == 1))
+                result = "YES";
+            else {
+                if((x == 1 && map2.get(x) == 1) ||(y == 1 && map2.get(y) == 1))
+                    result = "YES";
+            }
+        }
+            
+        return result;
+        
+    
+    }
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String s = scanner.nextLine();
+
+        String result = isValid(s);
+
+        bufferedWriter.write(result);
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+
+        scanner.close();
+    }
+}
