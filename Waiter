@@ -1,0 +1,98 @@
+import java.io.*;
+import java.math.*;
+import java.text.*;
+import java.util.*;
+import java.util.regex.*;
+
+public class Solution {
+  static int[] waiter(int[] number, int q) {
+        
+        List<Integer> result = new ArrayList<>();
+        List<List<Integer>> list = new ArrayList<>();
+        List<Integer> buffer = new ArrayList<>();
+        
+        for(int i=0; i<number.length; i++)
+            buffer.add(number[i]);
+        int prime = 1;
+        for(int rotation=1; rotation<=q; rotation++) {        
+            List<Integer> nextBuffer = new ArrayList<>();
+            List<Integer> divideList = new ArrayList<>();
+            prime = getNextPrime(prime);
+            for(int i=buffer.size()-1; i>=0; i--) {
+                int val = buffer.get(i);
+                if(val%prime == 0)
+                    divideList.add(val);
+                else
+                    nextBuffer.add(val);                
+            }
+            list.add(divideList);
+            buffer = nextBuffer; 
+            //System.out.println(prime+" - "+divideList);
+        }
+        
+        for(List<Integer> res:list) {
+            Collections.reverse(res);
+            result.addAll(res);
+        }
+        Collections.reverse(buffer);
+        result.addAll(buffer);
+        
+        return result.stream().mapToInt(x-> x).toArray();
+    }
+
+    static int getNextPrime(int starts) {        
+        int next = starts + 1;
+        boolean isPrime = true;
+        while(true) {
+            if(next == 2 || next == 3)
+                return starts + 1;
+            int i=2; 
+            while(i<=next/2) {    
+                if(next%i == 0) {
+                    isPrime = false;
+                    break;
+                }
+                i++;
+            }
+            if(isPrime) 
+                return next;
+            isPrime = true;
+            next ++;
+        }        
+    }
+    
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String[] nq = scanner.nextLine().split(" ");
+
+        int n = Integer.parseInt(nq[0].trim());
+
+        int q = Integer.parseInt(nq[1].trim());
+
+        int[] number = new int[n];
+
+        String[] numberItems = scanner.nextLine().split(" ");
+
+        for (int numberItr = 0; numberItr < n; numberItr++) {
+            int numberItem = Integer.parseInt(numberItems[numberItr].trim());
+            number[numberItr] = numberItem;
+        }
+
+        int[] result = waiter(number, q);
+
+        for (int resultItr = 0; resultItr < result.length; resultItr++) {
+            bufferedWriter.write(String.valueOf(result[resultItr]));
+
+            if (resultItr != result.length - 1) {
+                bufferedWriter.write("\n");
+            }
+        }
+
+        bufferedWriter.newLine();
+
+        bufferedWriter.close();
+    }
+}
