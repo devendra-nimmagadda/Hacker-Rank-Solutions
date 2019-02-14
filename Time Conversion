@@ -1,0 +1,55 @@
+import java.io.*;
+import java.math.*;
+import java.text.*;
+import java.util.*;
+import java.util.regex.*;
+
+public class Solution {
+
+    /*
+     * Complete the timeConversion function below.
+     */
+     static String timeConversion(String s) {
+        String twentyFourHourStr = null, tmpStr[] = null;
+        int hour = 0;
+        if (s == null)
+            return twentyFourHourStr;
+        else if (s.endsWith("AM")) {
+            tmpStr = s.split("AM")[0].split(":");
+            hour = Integer.parseInt(tmpStr[0]);
+            String hourString = null;
+            if (hour == 12) {
+                hourString = "00";
+            } else if (hour >= 1 && hour <= 9){
+                hourString = "0"+hour;
+            } else {
+                hourString = String.valueOf(hour);
+            }
+            twentyFourHourStr = hourString+":"+tmpStr[1]+":"+tmpStr[2];
+        } else if (s.endsWith("PM")) {
+            tmpStr = s.split("PM")[0].split(":");
+            hour = Integer.parseInt(tmpStr[0]);
+            if (hour >= 1 && hour <12) {
+                hour += 12;
+            }
+            twentyFourHourStr = String.valueOf(hour)+":"+tmpStr[1]+":"+tmpStr[2];
+        } 
+        
+        return twentyFourHourStr;
+    }
+
+    private static final Scanner scan = new Scanner(System.in);
+
+    public static void main(String[] args) throws IOException {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(System.getenv("OUTPUT_PATH")));
+
+        String s = scan.nextLine();
+
+        String result = timeConversion(s);
+
+        bw.write(result);
+        bw.newLine();
+
+        bw.close();
+    }
+}
