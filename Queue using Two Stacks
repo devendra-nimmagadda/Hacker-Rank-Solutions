@@ -1,0 +1,39 @@
+import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Deque;
+import java.util.List;
+import java.util.Scanner;
+
+public class Solution {
+
+    private static final Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int n = scanner.nextInt();
+        scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+
+        Deque<Integer> deque = new ArrayDeque<>();        
+        List<Integer> output = new ArrayList<>();
+        
+        for(int i=0; i<n; i++) {
+            String[] str = scanner.nextLine().split(" ");
+            int op = Integer.valueOf(str[0]);        
+            
+            switch(op) {
+                case 1: 
+                    deque.add(Integer.valueOf(str[1]));
+                    break;
+                case 2:
+                    if(!deque.isEmpty())
+                        deque.remove();
+                    break;
+                case 3:
+                    output.add(deque.element());                                        
+                    break;                
+            }
+            scanner.skip("(\r\n|[\n\r\u2028\u2029\u0085])?");
+        }
+        output.stream().forEach(System.out::println);
+        scanner.close();
+    }
+}
