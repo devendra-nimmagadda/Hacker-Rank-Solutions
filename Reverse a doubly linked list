@@ -1,0 +1,29 @@
+    // Complete the reverse function below.
+
+    /*
+     * For your reference:
+     *
+     * DoublyLinkedListNode {
+     *     int data;
+     *     DoublyLinkedListNode next;
+     *     DoublyLinkedListNode prev;
+     * }
+     *
+     */
+    static DoublyLinkedListNode reverse(DoublyLinkedListNode head) {
+        if (head == null || head.next == null)
+            return head;
+        DoublyLinkedListNode temp = null, temp2 = null, prev = null;
+        
+        temp = head.next;
+        prev = head;
+        while(temp != null) {
+            temp2 = temp.next;            
+            temp.next = head;
+            prev.next = temp2;
+            head = temp;            
+            temp = temp2;
+        }
+        return head;
+
+    }
